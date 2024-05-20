@@ -1,6 +1,6 @@
-import express, { Request, Response } from "express";
-export const app = express();
+import express, { Request, Response } from 'express'
+export const app = express()
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World!')
+})
