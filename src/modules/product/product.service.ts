@@ -1,12 +1,16 @@
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
+type ProductQuery = {
+  searchTerm?: string;
+};
+
 const createProduct = async (productData: TProduct) => {
   const result = await Product.create(productData);
   return result;
 };
 
-const getAllProducts = async (query: any) => {
+const getAllProducts = async (query: ProductQuery) => {
   const filter: any = {};
   if (query.searchTerm) {
     const regex = new RegExp(query.searchTerm, 'i');

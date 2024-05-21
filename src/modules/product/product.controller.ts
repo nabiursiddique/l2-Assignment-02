@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { productServices } from './product.service';
-import { z } from 'zod';
 import productSchemaValidator from './product.validation.zod';
 
 //* Creating a product in DB
@@ -17,7 +16,7 @@ const createProduct = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err: any) {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err,
@@ -28,19 +27,28 @@ const createProduct = async (req: Request, res: Response) => {
 //* Getting all the products from DB
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const query = req.query as any;
+    const query = req.query;
     const result = await productServices.getAllProducts(query);
-    if (result.length > 0) {
+
+    if (Object.keys(query).length === 0) {
       res.status(200).json({
         success: true,
-        message: `products ${query && `matching search term ${query.searchTerm}`} fetched successfully`,
+        message: 'Products fetched successfully!',
         data: result,
       });
     } else {
-      res.status(200).json({
-        success: false,
-        message: 'product not found',
-      });
+      if (result.length > 0) {
+        res.status(200).json({
+          success: true,
+          message: `products ${query && `matching search term ${query.searchTerm}`} fetched successfully`,
+          data: result,
+        });
+      } else {
+        res.status(200).json({
+          success: false,
+          message: 'product not found',
+        });
+      }
     }
   } catch (err) {
     res.status(500).json({
@@ -63,7 +71,7 @@ const getProductById = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: `some thing went wrong || ${err}`,
+      message: err,
     });
   }
 };
@@ -96,11 +104,11 @@ const updateProductInfo = async (req: Request, res: Response) => {
 const deleteAProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const result = await productServices.deleteAProduct(productId);
+    await productServices.deleteAProduct(productId);
     res.status(200).json({
       success: true,
       message: 'Product deleted successfully!',
-      data: result,
+      data: null,
     });
   } catch (err) {
     res.status(500).json({
