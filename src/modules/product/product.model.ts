@@ -1,15 +1,21 @@
-import mongoose, { Schema } from 'mongoose'
-import { TInventory, TProduct, TVariants } from './product.interface'
+import mongoose, { Schema } from 'mongoose';
+import { TInventory, TProduct, TVariants } from './product.interface';
 
-const variantsSchema = new Schema<TVariants>({
-  type: { type: String, required: true },
-  value: { type: String, required: true },
-})
+const variantsSchema = new Schema<TVariants>(
+  {
+    type: { type: String, required: true },
+    value: { type: String, required: true },
+  },
+  { _id: false },
+);
 
-const inventorySchema = new Schema<TInventory>({
-  quantity: { type: Number, required: true },
-  inStock: { type: Boolean, required: true },
-})
+const inventorySchema = new Schema<TInventory>(
+  {
+    quantity: { type: Number, required: true },
+    inStock: { type: Boolean, required: true },
+  },
+  { _id: false },
+);
 
 const movieSchema = new Schema<TProduct>({
   name: { type: String, required: true },
@@ -17,8 +23,8 @@ const movieSchema = new Schema<TProduct>({
   price: { type: Number, required: true },
   category: { type: String, required: true },
   tags: [{ type: String, required: true }],
-  variants: variantsSchema,
+  variants: [variantsSchema],
   inventory: inventorySchema,
-})
+});
 
-export const Product = mongoose.model<TProduct>('Product', movieSchema)
+export const Product = mongoose.model<TProduct>('Product', movieSchema);
