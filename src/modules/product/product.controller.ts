@@ -59,19 +59,39 @@ const updateProductInfo = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const updateData = req.body;
-    const updatedProduct = await productServices.updateProductInfo(
+    const result = await productServices.updateProductInfo(
       productId,
       updateData,
     );
-    res.status(200).json({
-      success: true,
-      message: 'Product updated successfully!',
-      data: updateData,
-    });
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Product updated successfully!',
+        data: updateData,
+      });
+    }
   } catch (err) {
     res.status(500).json({
       success: false,
       message: 'We could not update the product',
+    });
+  }
+};
+
+//* Delete a product from the DB
+const deleteAProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+    const result = await productServices.deleteAProduct(productId);
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: `something went wrong || ${err}`,
     });
   }
 };
@@ -81,4 +101,5 @@ export const ProductController = {
   getAllProducts,
   getProductById,
   updateProductInfo,
+  deleteAProduct,
 };
