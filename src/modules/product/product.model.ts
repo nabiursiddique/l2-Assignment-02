@@ -17,14 +17,17 @@ const inventorySchema = new Schema<TInventory>(
   { _id: false },
 );
 
-const movieSchema = new Schema<TProduct>({
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  category: { type: String, required: true },
-  tags: [{ type: String, required: true }],
-  variants: [variantsSchema],
-  inventory: inventorySchema,
-});
+const productSchema = new Schema<TProduct>(
+  {
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    category: { type: String, required: true },
+    tags: [{ type: String, required: true }],
+    variants: [variantsSchema],
+    inventory: inventorySchema,
+  },
+  { versionKey: false },
+);
 
-export const Product = mongoose.model<TProduct>('Product', movieSchema);
+export const Product = mongoose.model<TProduct>('Product', productSchema);
