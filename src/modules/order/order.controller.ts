@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { orderServices } from './order.service';
 import { orderSchemaValidator } from './order.validation.zod';
 
+//* Creating orders in db
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
@@ -21,6 +22,24 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//* Getting all orders from db
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const result = await orderServices.getAllOrders();
+    res.status(200).json({
+      success: true,
+      message: 'Orders fetched successfully!',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err,
+    });
+  }
+};
+
 export const OrderController = {
   createOrder,
+  getAllOrders,
 };
