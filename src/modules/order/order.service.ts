@@ -11,7 +11,7 @@ const createOrder = async (orderData: TOrder) => {
 };
 
 const getAllOrders = async (query: OrderQuery) => {
-  const filter: any = {};
+  const filter: Partial<TOrder> = {};
   if (query.email) {
     return await Order.find(query);
   }
